@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <a href="features.html" class="home-btn">Back</a>
+    <meta charset="UTF-8">
+    <title>Question Maker</title>
+    <script type="text/javascript">
+      // Declare global variables for questions array and current question index
+      var questions = [];
+      var currentQuestionIndex = 0;
+
+      function addQuestion() {
+        // Get user input values for question and answer fields
+        var question = document.getElementById("question").value;
+        var answer = document.getElementById("answer").value;
+
+        // Create new question object and push to questions array
+        var newQuestion = {question: question, answer: answer};
+        questions.push(newQuestion);
+
+        // Reset input fields
+        document.getElementById("question").value = "";
+        document.getElementById("answer").value = "";
+
+        // Alert user that question was added successfully
+        alert("Question added successfully!");
+      }
+
+      function takeTest() {
+        // Hide add question form and show test form
+        document.getElementById("add-question-form").style.display = "none";
+        document.getElementById("test-form").style.display = "block";
+
+        // Set current question index to 0 and display first question
+        currentQuestionIndex = 0;
+        displayQuestion();
+      }
+
+      function displayQuestion() {
+        // Display current question and increment current question index
+        document.getElementById("test-question").innerHTML = questions[currentQuestionIndex].question;
+        currentQuestionIndex++;
+      }
+
+      function checkAnswer() {
+        // Get user input value for answer field
+        var userAnswer = document.getElementById("test-answer").value;
+
+        // Check if user answer matches correct answer for current question
+        if (userAnswer === questions[currentQuestionIndex-1].answer) {
+          alert("Correct answer!");
+        } else {
+          alert("Incorrect answer.");
+        }
+
+        // Reset input field and display next question or end of test message
+        document.getElementById("test-answer").value = "";
+        if (currentQuestionIndex === questions.length) {
+          alert("End of test.");
+          document.getElementById("test-form").style.display = "none";
+          document.getElementById("add-question-form").style.display = "block";
+        } else {
+          displayQuestion();
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Question Maker</h1>
+
+    <!-- Add question form -->
+    <div id="add-question-form">
+      <h2>Add Question</h2>
+      <label for="question">Question:</label>
+      <input type="text" id="question"><br>
+      <label for="answer">Answer:</label>
+      <input type="text" id="answer"><br>
+      <button onclick="addQuestion()">Add Question</button>
+      <button onclick="takeTest()">Take Test</button>
+    </div>
+
+    <!-- Test form (hidden by default) -->
+    <div id="test-form" style="display: none;">
+      <h2>Test</h2>
+      <div id="test-question"></div>
+      <label for="test-answer">Answer:</label>
+      <input type="text" id="test-answer"><br>
+      <button onclick="checkAnswer()">Check Answer</button>
+    </div>
+  </body>
+</html>
